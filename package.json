@@ -1,0 +1,32 @@
+{
+  "name": "assign-back",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "clean": "rimraf dist/",
+    "transpile": "npx tsc",
+    "build": "npm-run-all clean transpile",
+    "server": "node dist/bin/www.js",
+    "start": "npm-run-all build server",
+    "dev": "nodemon src/bin/www.ts"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "^4.21.2",
+    "morgan": "^1.10.1",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^6.0.1"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.9",
+    "@types/debug": "^4.1.12",
+    "@types/express": "^5.0.3",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^24.1.0",
+    "nodemon": "^3.1.10",
+    "prisma": "^6.13.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
