@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../../generated/prisma";
 import { Request, Response } from "express";
 
 export default class UserController {
@@ -7,11 +7,12 @@ export default class UserController {
   constructor() {
     this.prisma = new PrismaClient
   }
-  
-  user = (req: Request, res: Response) => {
+
+  user = async (req: Request, res: Response) => {
+    const users = await this.prisma.user.findMany({})
     res.json({
       status: true,
-      data: "user"
+      data: users
     })
   }
 }
