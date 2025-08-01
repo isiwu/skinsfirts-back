@@ -15,10 +15,51 @@ datasource db {
 }
 
 model User {
-  id String @id @default(auto()) @db.ObjectId @map("_id")
-  fullName String
-  email String @unique
-  password String
-  phone String
-  dateOfBirth DateTime
+  id           String @id @default(auto()) @db.ObjectId @map("_id")
+  fullName     String
+  email        String @unique
+  password     String
+  phone        String
+  dateOfBirth  DateTime
+  patient      Patient?
+}
+
+model Patient {
+  id           String @id @default(auto()) @db.ObjectId @map("_id")
+  userId       String @db.ObjectId @unique
+  user         User @relation(references: [id], fields: [userId])
+  appointments Appointment[]
+}
+
+model Doctor {
+  id                String @id @default(auto()) @db.ObjectId @map("_id")
+  name              String
+  field             String
+  image             String
+  focus             String
+  profile           String
+  careerPath        String
+  highlight         String
+  gender            Gender
+  datesNotAvailable DateTime[]
+  timesNotAvailable DateTime[]
+  experience        Int
+  stars             Int
+  messages          Int
+  apponitments      Appointment[]
+}
+
+enum Gender {
+  male
+  female
+}
+
+model Appointment {
+  id         String @id @default(auto()) @db.ObjectId @map("_id")
+  // time       DateTime
+  date       DateTime
+  doctorId   String @db.ObjectId
+  patientId  String @db.ObjectId
+  doctor     Doctor @relation(references: [id], fields: [doctorId])
+  patient    Patient @relation(references: [id], fields: [patientId])
 }
