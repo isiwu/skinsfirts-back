@@ -44,8 +44,8 @@ model Doctor {
   datesNotAvailable DateTime[]
   timesNotAvailable DateTime[]
   experience        Int
-  stars             Int
-  messages          Int
+  stars             Int @default(0)
+  messages          Int @default(0)
   apponitments      Appointment[]
 }
 
@@ -62,4 +62,11 @@ model Appointment {
   patientId  String @db.ObjectId
   doctor     Doctor @relation(references: [id], fields: [doctorId])
   patient    Patient @relation(references: [id], fields: [patientId])
+  status     AppointmentStatus
+}
+
+enum AppointmentStatus {
+  completed
+  upcoming
+  cancelled
 }
