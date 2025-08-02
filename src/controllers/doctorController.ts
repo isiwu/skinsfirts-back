@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "../../generated/prisma"
+import { Gender, PrismaClient } from "../../generated/prisma"
 
 interface MulterRequest extends Request {
   file: any
@@ -14,10 +14,12 @@ export default class DoctorController {
 
   create = async (req: any, res: Response) => {
     const file = req.file;
-    const { name, field, focus, profile, careerPath, highlight, gender, dates, times, experience } = req.body;
+    const { name, field, focus, profile, careerPath, highlight, gender, experience } = req.body;
 
     var doctor: any;
     var fileUrl = `${req.protocol}://${req.headers.host}/images/${file?.filename}`
+    const newGender: Gender = gender==="male"? "male":"female";
+
     try {
       doctor = await this.prisma.doctor.create({
         data: {
@@ -28,14 +30,12 @@ export default class DoctorController {
           profile,
           careerPath,
           highlight,
-          gender,
-          datesNotAvailable: dates,
-          timesNotAvailable: times,
-          experience
+          gender: newGender,
+          experience: Number(experience)
         }
       })
     } catch (error) {
-      return res.json({status: false, data: error})
+      return res.status(400).json({status: false, error: error})
     }
 
     res.json({status: true, data: doctor})
@@ -66,20 +66,20 @@ export default class DoctorController {
     const { id } = req.params;
 
     var doctor: any;
-    try {
-      doctor = await this.prisma.doctor.update({
-        where: { id },
-        data: {
-          datesNotAvailable: {
-            push: new Date(),
-          },
-          timesNotAvailable: {
-            push: new Date()
-          }
-        }
-      })
-    } catch (error) {
-      return res.json({status: false, data: error});
-    }
+    // try {
+    //   doctor = await this.prisma.doctor.update({
+    //     where: { id },
+    //     data: {
+    //       datesNotAvailable: {
+    //         push: new Date(),
+    //       },
+    //       timesNotAvailable: {
+    //         push: new Date()
+    //       }
+    //     }
+    //   })
+    // } catch (error) {
+    //   return res.json({status: false, data: error});
+    // }
   }
 }

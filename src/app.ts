@@ -18,3 +18,4 @@ app.use('/api', router)
 export default app;
 // LH0oMmW40yZIagdg
 // mongodb+srv://isiwuemmao:LH0oMmW40yZIagdg@cluster0.weugmut.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+// localhost => 127.0.0.1:3000

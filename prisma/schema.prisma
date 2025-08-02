@@ -40,12 +40,11 @@ model Doctor {
   profile           String
   careerPath        String
   highlight         String
-  gender            Gender
-  datesNotAvailable DateTime[]
-  timesNotAvailable DateTime[]
+  gender            Gender @default(male)
   experience        Int
   stars             Int @default(0)
   messages          Int @default(0)
+  availables        Availability[]
   apponitments      Appointment[]
 }
 
@@ -54,15 +53,40 @@ enum Gender {
   female
 }
 
+model Availability {
+  id        String @id @default(auto()) @db.ObjectId @map("_id")
+  doctorId  String @db.ObjectId
+  doctor    Doctor @relation(fields: [doctorId], references: [id])
+  date      DateTime
+  startTime String
+  endTime   String
+  status    SlotStatus @default(available)
+}
+
+enum SlotStatus {
+  available
+  booked
+  blocked
+}
+
 model Appointment {
-  id         String @id @default(auto()) @db.ObjectId @map("_id")
+  id                     String @id @default(auto()) @db.ObjectId @map("_id")
   // time       DateTime
-  date       DateTime
-  doctorId   String @db.ObjectId
-  patientId  String @db.ObjectId
-  doctor     Doctor @relation(references: [id], fields: [doctorId])
-  patient    Patient @relation(references: [id], fields: [patientId])
-  status     AppointmentStatus
+  date                    DateTime
+  startTime               String
+  endTime                 String
+  doctorId                String @db.ObjectId
+  patientId               String @db.ObjectId
+  doctor                  Doctor @relation(references: [id], fields: [doctorId])
+  patient                 Patient @relation(references: [id], fields: [patientId])
+  appointmentDescription  String
+  person                  AppointmentPerson @default(self)
+  status                  AppointmentStatus
+}
+
+enum AppointmentPerson {
+  self
+  another
 }
 
 enum AppointmentStatus {

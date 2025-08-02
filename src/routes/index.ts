@@ -5,6 +5,6 @@ import doctorRouter from "./doctor";
 const router = Router();
 
 router.use('/users', userRouter);
-router.use("doctors", doctorRouter);
+router.use("/doctors", doctorRouter);
 
 export default router;

@@ -16,6 +16,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 const doctorController = new DoctorController();
 
-router.post("create", upload.single("image"), doctorController.create)
+router.post("/create", upload.single("image"), doctorController.create)
 
 export default router;

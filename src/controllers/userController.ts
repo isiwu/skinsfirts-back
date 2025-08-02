@@ -9,7 +9,8 @@ export default class UserController {
   }
 
   user = async (req: Request, res: Response) => {
-    const users = await this.prisma.user.findMany({})
+    const users = await this.prisma.user.findMany()
+
     res.json({
       status: true,
       data: users
