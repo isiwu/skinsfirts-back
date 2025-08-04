@@ -1,7 +1,7 @@
 import { Router } from "express";
 import multer from "multer";
 import path from "path";
-import DoctorController from "../controllers/doctorController";
+import DoctorControllers from "../controllers/doctorControllers";
 
 const router = Router();
 const storage = multer.diskStorage({
@@ -14,8 +14,11 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage });
-const doctorController = new DoctorController();
+const doctorControllers = new DoctorControllers();
 
-router.post("/create", upload.single("image"), doctorController.create)
+router.post("/create", upload.single("image"), doctorControllers.create);
+router.patch("/:id/update", upload.single("image"), doctorControllers.updateDoctor);
+router.post("/:id/availability", doctorControllers.availability);
+router.patch("/:id/availability", doctorControllers.updateAvailability);
 
 export default router;

@@ -5,7 +5,7 @@ interface MulterRequest extends Request {
   file: any
 }
 
-export default class DoctorController {
+export default class DoctorControllers {
   private prisma;
 
   constructor() {
@@ -96,9 +96,6 @@ export default class DoctorController {
   availability = async (req: Request, res: Response) => {
     const { date, times, doctorId } = req.body;
 
-    var availability1: any;
-    var availableTimes1: any;
-
     try {
       const availability = await this.prisma.availability.create({
         data: {
@@ -124,6 +121,17 @@ export default class DoctorController {
       res.json({status: true, data: available})
     } catch (error) {
       return res.json({status: false, data: error});
+    }
+  }
+  updateAvailability = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    try {
+      await this.prisma.availability.update({ 
+        where: { id }, 
+        data: { status: "blocked" }})
+    } catch (error) {
+      return res.json({status: false, data: error})
     }
   }
 }
