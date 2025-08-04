@@ -21,14 +21,6 @@ model User {
   password     String
   phone        String
   dateOfBirth  DateTime
-  patient      Patient?
-}
-
-model Patient {
-  id           String @id @default(auto()) @db.ObjectId @map("_id")
-  userId       String @db.ObjectId @unique
-  user         User @relation(references: [id], fields: [userId])
-  appointments Appointment[]
 }
 
 model Doctor {
@@ -86,11 +78,20 @@ model Appointment {
   doctor                  Doctor @relation(references: [id], fields: [doctorId])
   patient                 Patient @relation(references: [id], fields: [patientId])
   appointmentDescription  String
-  person                  AppointmentPerson @default(self)
-  status                  AppointmentStatus
+  status                  AppointmentStatus @default(upcoming)
 }
 
-enum AppointmentPerson {
+model Patient {
+  id           String @id @default(auto()) @db.ObjectId @map("_id")
+  userId       String @db.ObjectId
+  name         String?
+  age          String?
+  gender       Gender
+  appointments Appointment[]
+  status       PatientStatus @default(self)
+}
+
+enum PatientStatus {
   self
   another
 }
