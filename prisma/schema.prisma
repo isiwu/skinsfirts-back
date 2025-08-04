@@ -58,9 +58,16 @@ model Availability {
   doctorId  String @db.ObjectId
   doctor    Doctor @relation(fields: [doctorId], references: [id])
   date      DateTime
-  startTime String
-  endTime   String
+  times     Time[]
   status    SlotStatus @default(available)
+}
+
+model Time {
+  id            String @id @default(auto()) @db.ObjectId @map("_id")
+  availableId   String @db.ObjectId
+  availability  Availability @relation(fields: [availableId], references: [id])
+  startTime     String
+  endTime       String
 }
 
 enum SlotStatus {
@@ -70,8 +77,7 @@ enum SlotStatus {
 }
 
 model Appointment {
-  id                     String @id @default(auto()) @db.ObjectId @map("_id")
-  // time       DateTime
+  id                      String @id @default(auto()) @db.ObjectId @map("_id")
   date                    DateTime
   startTime               String
   endTime                 String
