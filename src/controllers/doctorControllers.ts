@@ -94,33 +94,49 @@ export default class DoctorControllers {
     res.json({status: true, data: doctor})
   }
   availability = async (req: Request, res: Response) => {
-    const { date, times, doctorId } = req.body;
+    const { id } = req.params;
+    const { date, times } = req.body;
+    
+    // for (let i = 0; i < times.length; i++) {
+    //   const newTimes = times[i];
+    //   console.log(newTimes);
+      
+    //     for (let j = 0; j < newTimes.length; j++) {
+    //       console.log("start => ", newTimes[j]);
+    //       console.log("end => ", newTimes[j]);
+    //     }
+    //   }
+
+    // res.json({status: true, data: ""})
+
 
     try {
       const availability = await this.prisma.availability.create({
         data: {
-          doctorId,
+          doctorId: id,
           date: new Date(date),
         }
       })
 
       for (let i = 0; i < times.length; i++) {
-        for (let j = 0; j < times[i].length; j++) {
-          await this.prisma.time.create({
+        await this.prisma.time.create({
             data: {
               availableId: availability.id,
-              startTime: times[i][j][0],
-              endTime: times[i][j][1]
+              startTime: times[i][0],
+              endTime: times[i][1]
             }
           });
-        }
       }
 
-      const available = await this.prisma.availability.findFirst({ where: { id: availability.id }});
+      const available = await this.prisma.availability.findFirst({ where: { id: availability.id }, include: {
+        times: true
+      }});
 
       res.json({status: true, data: available})
     } catch (error) {
-      return res.json({status: false, data: error});
+      console.log("error => ", error);
+      
+      return res.status(500).json({status: false, data: error});
     }
   }
   updateAvailability = async (req: Request, res: Response) => {
@@ -133,5 +149,12 @@ export default class DoctorControllers {
     } catch (error) {
       return res.json({status: false, data: error})
     }
+  }
+  deleteAvailability = async (req: Request, res: Response) => {
+    const { id , availableId} = req.params;
+
+    await this.prisma.availability.deleteMany({where: {id: availableId}});
+
+    res.json({status: true, data: ""});
   }
 }

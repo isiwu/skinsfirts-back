@@ -48,7 +48,7 @@ enum Gender {
 model Availability {
   id        String @id @default(auto()) @db.ObjectId @map("_id")
   doctorId  String @db.ObjectId
-  doctor    Doctor @relation(fields: [doctorId], references: [id])
+  doctor    Doctor @relation(fields: [doctorId], references: [id], onDelete: Cascade)
   date      DateTime
   times     Time[]
   status    SlotStatus @default(available)
@@ -57,7 +57,7 @@ model Availability {
 model Time {
   id            String @id @default(auto()) @db.ObjectId @map("_id")
   availableId   String @db.ObjectId
-  availability  Availability @relation(fields: [availableId], references: [id])
+  availability  Availability @relation(fields: [availableId], references: [id], onDelete: Cascade)
   startTime     String
   endTime       String
 }
