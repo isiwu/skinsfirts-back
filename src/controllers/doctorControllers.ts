@@ -153,7 +153,11 @@ export default class DoctorControllers {
   deleteAvailability = async (req: Request, res: Response) => {
     const { id , availableId} = req.params;
 
-    await this.prisma.availability.deleteMany({where: {id: availableId}});
+    try {
+      await this.prisma.availability.deleteMany({where: {id: availableId}});
+    } catch (error) {
+      return res.status(500).json({status: false, data: error});
+    }
 
     res.json({status: true, data: ""});
   }
