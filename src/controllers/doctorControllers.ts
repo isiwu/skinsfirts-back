@@ -74,7 +74,7 @@ export default class DoctorControllers {
   doctors = async (req: Request, res: Response) => {
     var doctors: any;
     try {
-      doctors = await this.prisma.doctor.findMany({});
+      doctors = await this.prisma.doctor.findMany({ include: { availables: { include: { times: true }} }});
     } catch (error) {
       return res.json({status: false, data: error})
     }
