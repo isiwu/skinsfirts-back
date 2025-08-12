@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Gender, PrismaClient } from "../../generated/prisma"
+import { Doctor, Gender, PrismaClient } from "../../generated/prisma"
 
 interface MulterRequest extends Request {
   file: any
@@ -72,9 +72,9 @@ export default class DoctorControllers {
     }
   }
   doctors = async (req: Request, res: Response) => {
-    var doctors: any;
+    var doctors: Doctor[];
     try {
-      doctors = await this.prisma.doctor.findMany({ include: { availables: { include: { times: true }} }});
+      doctors = await this.prisma.doctor.findMany({});
     } catch (error) {
       return res.json({status: false, data: error})
     }
@@ -84,9 +84,9 @@ export default class DoctorControllers {
   doctor = async (req:Request, res: Response) => {
     const { id } = req.params;
 
-    var doctor: any;
+    var doctor: Doctor;
     try {
-      doctor = await this.prisma.doctor.findUnique({ where: { id }})
+      doctor = await this.prisma.doctor.findUnique({ where: { id }}) as Doctor
     } catch (error) {
       return res.json({status: false, data: error})
     }
