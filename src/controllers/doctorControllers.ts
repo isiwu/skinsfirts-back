@@ -93,22 +93,21 @@ export default class DoctorControllers {
 
     res.json({status: true, data: doctor})
   }
+  doctorAvailabilities = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    try {
+      const availabilities = await this.prisma.availability.findMany({ where: { doctorId: id }, include: { times: true }});
+      res.json({status: true, data: availabilities});
+    } catch (error) {
+      console.log("error => ", error);
+      
+      return res.status(500).json({status: false, data: error});
+    }
+  }
   availability = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { date, times } = req.body;
-    
-    // for (let i = 0; i < times.length; i++) {
-    //   const newTimes = times[i];
-    //   console.log(newTimes);
-      
-    //     for (let j = 0; j < newTimes.length; j++) {
-    //       console.log("start => ", newTimes[j]);
-    //       console.log("end => ", newTimes[j]);
-    //     }
-    //   }
-
-    // res.json({status: true, data: ""})
-
 
     try {
       const availability = await this.prisma.availability.create({

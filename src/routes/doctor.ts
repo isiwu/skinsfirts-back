@@ -22,5 +22,6 @@ router.patch("/:id/update", upload.single("image"), doctorControllers.updateDoct
 router.post("/:id/availability", doctorControllers.availability);
 router.patch("/:id/availability", doctorControllers.updateAvailability);
 router.delete("/:id/availability/:availableId", doctorControllers.deleteAvailability);
+router.get("/:id/availabilities", doctorControllers.doctorAvailabilities);
 
 export default router;
