@@ -17,6 +17,7 @@ const upload = multer({ storage });
 const doctorControllers = new DoctorControllers();
 
 router.get("/", doctorControllers.doctors);
+router.get("/:id", doctorControllers.doctor);
 router.post("/create", upload.single("image"), doctorControllers.create);
 router.patch("/:id/update", upload.single("image"), doctorControllers.updateDoctor);
 router.post("/:id/availability", doctorControllers.availability);
